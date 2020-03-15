@@ -8,23 +8,205 @@
   "host": "localhost:1150",
   "tags": [
     {
-      "name": "Create"
-    },
-    {
-      "name": "Update"
-    },
-    {
-      "name": "Query"
+      "name": "ATM"
     }
   ],
   "schemes": [
     "http"
   ],
   "paths": {
-    "/createStudent": {
+    "/deposit": {
       "post": {
         "tags": [
-          "Create"
+          "ATM"
+        ],
+        "summary": "ฝากเงิน",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "formData",
+            "description": "เลขบัญชี",
+            "required": true,
+            "type": "string",
+            "default": "2562-34-21-10001"
+          },
+          {
+            "name": "pin",
+            "in": "formData",
+            "description": "รหัสบัญชี",
+            "required": true,
+            "type": "string",
+            "default": "6969"
+          },
+          {
+            "name": "money",
+            "in": "formData",
+            "description": "จำนวนเงิน",
+            "required": true,
+            "type": "integer",
+            "default": 1000
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update",
+            "schema": {
+              "$ref": "#/definitions/transaction200"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/badRequest400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/transaction500"
+            }
+          }
+        }
+      }
+    },
+    "/withdraw": {
+      "post": {
+        "tags": [
+          "ATM"
+        ],
+        "summary": "ถอนเงิน",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "formData",
+            "description": "เลขบัญชี",
+            "required": true,
+            "type": "string",
+            "default": "2562-34-21-10001"
+          },
+          {
+            "name": "pin",
+            "in": "formData",
+            "description": "รหัสบัญชี",
+            "required": true,
+            "type": "string",
+            "default": "6969"
+          },
+          {
+            "name": "money",
+            "in": "formData",
+            "description": "จำนวนเงิน",
+            "required": true,
+            "type": "integer",
+            "default": 1000
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update",
+            "schema": {
+              "$ref": "#/definitions/transaction200"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/badRequest400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/transaction500"
+            }
+          }
+        }
+      }
+    },
+    "/transfer": {
+      "post": {
+        "tags": [
+          "ATM"
+        ],
+        "summary": "โอนเงิน",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "formData",
+            "description": "เลขบัญชี",
+            "required": true,
+            "type": "string",
+            "default": "2562-34-21-10001"
+          },
+          {
+            "name": "pin",
+            "in": "formData",
+            "description": "รหัสบัญชี",
+            "required": true,
+            "type": "string",
+            "default": "6969"
+          },
+          {
+            "name": "receive_account",
+            "in": "formData",
+            "description": "เลขบัญชีผู้รับ",
+            "required": true,
+            "type": "string",
+            "default": "6969"
+          },
+          {
+            "name": "money",
+            "in": "formData",
+            "description": "จำนวนเงิน",
+            "required": true,
+            "type": "integer",
+            "default": 1000
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update",
+            "schema": {
+              "$ref": "#/definitions/transaction200"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/badRequest400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/transaction500"
+            }
+          }
+        }
+      }
+    },
+    "/checkBalance": {
+      "post": {
+        "tags": [
+          "ATM"
         ],
         "summary": "Create student info",
         "description": "Create Student info To DataBase",
@@ -36,128 +218,27 @@
         ],
         "parameters": [
           {
-            "name": "Fname",
+            "name": "account_id",
             "in": "formData",
-            "description": "request info student's full name",
+            "description": "เลขบัญชี",
             "required": true,
             "type": "string",
-            "default": "Jirapon"
+            "default": "2562-34-21-10001"
           },
           {
-            "name": "Lname",
+            "name": "pin",
             "in": "formData",
-            "description": "request info student's last name",
+            "description": "รหัสบัญชี",
             "required": true,
             "type": "string",
-            "default": "Jermkure"
-          },
-          {
-            "name": "faculty_id",
-            "in": "formData",
-            "description": "request info student's faculty id",
-            "required": true,
-            "type": "integer",
-            "default": 1
-          },
-          {
-            "name": "gender",
-            "in": "formData",
-            "description": "request info student's gender",
-            "required": true,
-            "type": "string",
-            "default": "M"
-          },
-          {
-            "name": "grade",
-            "in": "formData",
-            "description": "request info student's grade",
-            "required": true,
-            "type": "number",
-            "default": 3.14
-          },
-          {
-            "name": "student_status",
-            "in": "formData",
-            "description": "request info student's status",
-            "required": true,
-            "type": "string",
-            "default": "Y"
-          },
-          {
-            "name": "create_by",
-            "in": "formData",
-            "description": "request who create info",
-            "required": true,
-            "type": "string",
-            "default": "chaiwat sumrit"
-          },
-          {
-            "name": "update_by",
-            "in": "formData",
-            "description": "request who update info",
-            "required": true,
-            "type": "string",
-            "default": "chaiwat sumrit"
-          },
-          {
-            "name": "work_status",
-            "in": "formData",
-            "description": "request info student's work status",
-            "required": true,
-            "type": "string",
-            "default": "Y"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/createStudent201"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/badRequest400"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/createStudent500"
-            }
-          }
-        }
-      }
-    },
-    "/getStudent": {
-      "post": {
-        "tags": [
-          "Query"
-        ],
-        "summary": "get student's info By Id",
-        "description": "get student's info from DataBase",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "formData",
-            "description": "request student's id",
-            "required": true,
-            "type": "integer",
-            "default": 1
+            "default": "6969"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Update",
             "schema": {
-              "$ref": "#/definitions/getStudent200"
+              "$ref": "#/definitions/transaction200"
             }
           },
           "400": {
@@ -169,73 +250,13 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#/definitions/createStudent500"
+              "$ref": "#/definitions/transaction500"
             }
           }
         }
       }
-    },
-    "/updateGrade": {
-      "post": {
-        "tags": [
-          "Update"
-        ],
-        "summary": "update student's grade By Id",
-        "description": "update student's info to DataBase",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "formData",
-            "description": "request student's id",
-            "required": true,
-            "type": "integer",
-            "default": 1
-          },
-          {
-            "name": "grade",
-            "in": "formData",
-            "description": "request student's grade",
-            "required": true,
-            "type": "number",
-            "default": 4
-          },
-          {
-            "name": "update_by",
-            "in": "formData",
-            "description": "request who update info",
-            "required": true,
-            "type": "string",
-            "default": "ProfRungrat"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/update200"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/badRequest400"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/createStudent500"
-            }
-          }
-        }
-      }
-    },
+    }
+  },
   "definitions": {
     "badRequest400": {
       "type": "object",
@@ -246,24 +267,24 @@
         },
         "message": {
           "type": "string",
-          "example": "<function_name>.id is required"
+          "example": "<function_name> account_id is required"
         }
       }
     },
-    "createStudent201": {
+    "transaction200": {
       "type": "object",
       "properties": {
         "statusCode": {
           "type": "number",
-          "example": 201
+          "example": 200
         },
         "message": {
           "type": "string",
-          "example": "create success"
+          "example": "Transaction has been submitted"
         }
       }
     },
-    "createStudent500": {
+    "transaction500": {
       "type": "object",
       "properties": {
         "statusCode": {
@@ -273,105 +294,6 @@
         "message": {
           "type": "string",
           "example": "Internal Server Error"
-        }
-      }
-    },
-    "getStudent200": {
-      "type": "object",
-      "properties": {
-        "statusCode": {
-          "type": "number",
-          "example": 200
-        },
-        "message": {
-          "$ref": "#/definitions/StudentInfo"
-        }
-      }
-    },
-    "update200": {
-      "type": "object",
-      "properties": {
-        "statusCode": {
-          "type": "number",
-          "example": 200
-        },
-        "message": {
-          "type": "string",
-          "example": "update success"
-        }
-      }
-    },
-    "StudentInfo": {
-      "type": "object",
-      "required": [
-        "id"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "example": 1
-        },
-        "Fname": {
-          "type": "string",
-          "example": "Jirapon"
-        },
-        "Lname": {
-          "type": "string",
-          "example": "Jermkure"
-        },
-        "faculty_id": {
-          "type": "integer",
-          "example": 1
-        },
-        "gender": {
-          "type": "string",
-          "example": "M"
-        },
-        "admission_date": {
-          "type": "string",
-          "example": "2020-03-14T14:22:25.000Z"
-        },
-        "grade": {
-          "type": "number",
-          "example": 3.14
-        },
-        "student_status": {
-          "type": "string",
-          "example": "Y"
-        },
-        "create_by": {
-          "type": "string",
-          "example": "chaiwat sumrit"
-        },
-        "create_date": {
-          "type": "string",
-          "example": "2020-03-14T14:22:25.000Z"
-        },
-        "update_by": {
-          "type": "string",
-          "example": "chaiwat sumrit"
-        },
-        "update_date": {
-          "type": "string",
-          "example": "2020-03-14T14:22:25.000Z"
-        },
-        "work_status": {
-          "type": "string",
-          "example": "Y"
-        }
-      },
-      "title": "Student Info"
-    },
-    "getStudent500": {
-      "type": "object",
-      "properties": {
-        "statusCode": {
-          "type": "number",
-          "example": 500
-        },
-        "message": {
-          "type": "string",
-          "example": "[getStudent] id not found"
         }
       }
     }
