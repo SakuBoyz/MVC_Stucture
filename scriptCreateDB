@@ -1,0 +1,20 @@
+-- Drop table
+
+-- DROP TABLE ohmDB.dbo.STUDENT_PROFILE GO
+
+CREATE TABLE ohmDB.dbo.STUDENT_PROFILE (
+	id bigint IDENTITY(1,1) NOT NULL,
+	FName varchar(50) COLLATE Thai_CI_AS NULL,
+	LName varchar(50) COLLATE Thai_CI_AS NULL,
+	faculty_id bigint NULL,
+	gender varchar(1) COLLATE Thai_CI_AS NULL,
+	admission_date datetime2(7) NULL,
+	grade float NULL,
+	student_status varchar(1) COLLATE Thai_CI_AS NULL,
+	create_by varchar(50) COLLATE Thai_CI_AS NULL,
+	create_date datetime2(7) NULL,
+	update_by varchar(50) COLLATE Thai_CI_AS NULL,
+	update_date datetime2(7) NULL,
+	work_status varchar(1) COLLATE Thai_CI_AS NULL
+) GO
+
