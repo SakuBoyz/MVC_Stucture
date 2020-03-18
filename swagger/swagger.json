@@ -34,7 +34,7 @@
             "description": "เลขบัญชี",
             "required": true,
             "type": "string",
-            "default": "2562-34-21-10001"
+            "default": "2562342110001"
           },
           {
             "name": "pin",
@@ -94,7 +94,7 @@
             "description": "เลขบัญชี",
             "required": true,
             "type": "string",
-            "default": "2562-34-21-10001"
+            "default": "2562342110001"
           },
           {
             "name": "pin",
@@ -154,7 +154,7 @@
             "description": "เลขบัญชี",
             "required": true,
             "type": "string",
-            "default": "2562-34-21-10001"
+            "default": "2562342110001"
           },
           {
             "name": "pin",
@@ -170,7 +170,7 @@
             "description": "เลขบัญชีผู้รับ",
             "required": true,
             "type": "string",
-            "default": "6969"
+            "default": "2562342110002"
           },
           {
             "name": "money",
@@ -223,7 +223,7 @@
             "description": "เลขบัญชี",
             "required": true,
             "type": "string",
-            "default": "2562-34-21-10001"
+            "default": "2562342110001"
           },
           {
             "name": "pin",

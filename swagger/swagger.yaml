@@ -24,7 +24,7 @@ paths:
           description: เลขบัญชี
           required: true
           type: string
-          default: '2562-34-21-10001'
+          default: '2562342110001'
         - name: pin
           in: formData
           description: รหัสบัญชี
@@ -65,7 +65,7 @@ paths:
           description: เลขบัญชี
           required: true
           type: string
-          default: '2562-34-21-10001'
+          default: '2562342110001'
         - name: pin
           in: formData
           description: รหัสบัญชี
@@ -106,7 +106,7 @@ paths:
           description: เลขบัญชี
           required: true
           type: string
-          default: '2562-34-21-10001'
+          default: '2562342110001'
         - name: pin
           in: formData
           description: รหัสบัญชี
@@ -118,7 +118,7 @@ paths:
           description: เลขบัญชีผู้รับ
           required: true
           type: string
-          default: '6969'
+          default: '2562342110002'
         - name: money
           in: formData
           description: จำนวนเงิน
@@ -154,7 +154,7 @@ paths:
           description: เลขบัญชี
           required: true
           type: string
-          default: '2562-34-21-10001'
+          default: '2562342110001'
         - name: pin
           in: formData
           description: รหัสบัญชี
