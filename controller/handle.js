@@ -21,30 +21,22 @@ class request {
         var setNumA4 = account_id.substring(8,13);
         return `${setNumA1}-${setNumA2}-${setNumA3}-${setNumA4}`
     }
-    async deposit(req) {
+    async deposit(req) {//ฝากเงิน
         let functionName = '[deposit]' //ชื่อ function
+        logger.info(`Function${functionName}`)
         return new Promise(async function (resolve, reject) {
             try {
-                var Request = new sql.Request();
                 var account_id = req.account_id || reject `${functionName} account_id is required`;
                 var pin = req.pin || reject `${functionName} pin is required`;
-                var money = req.money;
+                var money = parseInt(req.money);
                 if(account_id.length != 13) reject `Please enter your account_id for 13 digits`
                 if(money < 100) reject `Please put your money over 100 BAHT`
                 if(money%100 != 0) reject `Please put your money without fraction => 1000, 500, 100 BAHT`
                 else {
                     var accountId = await new request().addFormatAccountId(account_id);//จัด format ของเลขบัญชี
-                    // var commandCheckBalance = `SELECT balance
-                    // FROM Banking
-                    // WHERE account_id = '${accountId}' AND pin = '${pin}';`// sql command
-                    // var resultCheckBalance = await Request.query(commandCheckBalance); //ยิง command เข้าไปใน DB
-                    // logger.debug(`Balance = ${resultCheckBalance.recordset[0].balance}`)
-                    // var balance = resultCheckBalance.recordset[0].balance + money;
-                    // logger.debug(`RecentBalance = ${balance}`)
-                    var commandUpdateBlance= `UPDATE Banking
-                    SET balance += ${money}
-                    WHERE account_id = '${accountId}' AND pin = '${pin}'`// sql command
-                    var resultUpdate = await Request.query(commandUpdateBlance); //ยิง command เข้าไปใน DB
+                    var balance = await new msSql().getBalanceById(accountId, pin) + money;//GET ยอดเงินคงเหลือมา + กับเงินฝาก
+                    logger.debug(`recentBalance = ${balance}`)
+                    await new msSql().updateBalance(accountId, balance);//UPDATE ยอดเงินคงเหลือ
                     let massage = {
                         statusCode: 200,
                         status: `Transaction has been submitted`
@@ -55,38 +47,28 @@ class request {
             } catch (error) { //ดัก error
                 let messageError = {
                     statusCode: error.statusCode || 400,
-                    message: error.message || `${functionName} CREATE failed [Error] ${error}`
+                    message: error.message || `${functionName} UPDATE failed [Error] ${error}`
                 }
                 logger.error(messageError.message);
                 reject(messageError);
             }
         })
     }
-    async withdraw(req) {
+    async withdraw(req) {//ถอนเงิน
         let functionName = '[withdraw]' //ชื่อ function
+        logger.info(`Function${functionName}`)
         return new Promise(async function (resolve, reject) {
             try {
-                var Request = new sql.Request();
                 var account_id = req.account_id || reject `${functionName} account_id is required`;
                 var pin = req.pin || reject `${functionName} pin is required`;
-                var money = req.money;
+                var money = parseInt(req.money);
                 if(account_id.length != 13) reject `Please enter your account_id for 13 digits`
                 if(money%100 != 0) reject `Please put your money without fraction => 1000, 500, 100 BAHT`
                 else {
                     var accountId = await new request().addFormatAccountId(account_id); //จัด format ของเลขบัญชี
-                    var commandCheckBalance = `SELECT balance
-                    FROM Banking
-                    WHERE account_id = '${accountId}' AND pin = '${pin}';`// sql command
-                    var resultCheckBalance = await Request.query(commandCheckBalance); //ยิง command เข้าไปใน DB
-                    logger.debug(`Balance = ${resultCheckBalance.recordset[0].balance}`)
-                    if(money > resultCheckBalance.recordset[0].balance) reject `Cannot withdraw over your balance`
-                    if(money > 20000) reject `Cannot withdraw over 20,000 BAHT`
-                    var balance = resultCheckBalance.recordset[0].balance - money;
-                    logger.debug(`RecentBalance = ${balance}`)
-                    var commandUpdateBlance= `UPDATE Banking
-                    SET balance = ${balance}
-                    WHERE account_id = '${accountId}' AND pin = '${pin}'`
-                    var resultUpdate = await Request.query(commandUpdateBlance); //ยิง command เข้าไปใน DB
+                    var balance = await new msSql().getBalanceById(accountId, pin) - money;//GET ยอดเงินคงเหลือมา - กับเงินฝาก
+                    logger.debug(`recentBalance = ${balance}`)
+                    await new msSql().updateBalance(accountId, balance);//UPDATE ยอดเงินคงเหลือ
                     let massage = {
                         statusCode: 200,
                         status: `Transaction has been submitted`
@@ -97,48 +79,35 @@ class request {
             } catch (error) { //ดัก error
                 let messageError = {
                     statusCode: error.statusCode || 400,
-                    message: error.message || `${functionName} CREATE failed [Error] ${error}`
+                    message: error.message || `${functionName} UPDATE failed [Error] ${error}`
                 }
                 logger.error(messageError.message);
                 reject(messageError);
             }
         })
     }
-    async transfer(req) {
+    async transfer(req) {//โอนเงิน
         let functionName = '[transfer]' //ชื่อ function
+        logger.info(`Function${functionName}`)
         return new Promise(async function (resolve, reject) {
             try {
                 var Request = new sql.Request();
                 var account_id = req.account_id || reject `${functionName} account_id is required`;
                 var pin = req.pin || reject `${functionName} pin is required`;
                 var receive_account = req.receive_account || reject `${functionName} receive_account is required`;
-                var money = req.money;
+                var money = parseInt(req.money);
                 if(account_id.length != 13) reject `Please enter your account_id for 13 digits`
-                var accountId = await new request().addFormatAccountId(account_id); //จัด format ของเลขบัญชี
-                var receiverAccountId = await new request().addFormatAccountId(receive_account); //จัด format ของเลขบัญชี
-                var commandCheckBalanceP1 = `SELECT balance
-                FROM Banking
-                WHERE account_id = '${accountId}' AND pin = '${pin}';`// sql command
-                var resultCheckBalanceP1 = await Request.query(commandCheckBalanceP1); //ยิง command เข้าไปใน DB
-                logger.debug(`BalanceP1 = ${resultCheckBalanceP1.recordset[0].balance}`)
+                var accountId = await new request().addFormatAccountId(account_id); //จัด format ของเลขบัญชีผู้โอน
+                var receiverAccountId = await new request().addFormatAccountId(receive_account); //จัด format ของเลขบัญชีผู้รับโอน
+                var balance = await new msSql().getBalanceById(accountId, pin);//GET ยอดเงินคงเหลือ
                 if(money > 1000000) reject `Cannot transfer over 1,000,000 BAHT`
-                if(money > resultCheckBalanceP1.recordset[0].balance)reject `Cannot transfer over your balance`
-                var balanceP1 = resultCheckBalanceP1.recordset[0].balance - money;
-                logger.debug(`RecentBalanceP1 = ${balanceP1}`)
-                var commandUpdateBlanceP1 = `UPDATE Banking
-                SET balance = ${balanceP1}
-                WHERE account_id = '${accountId}' AND pin = '${pin}'`// sql command
-                var resultUpdate = await Request.query(commandUpdateBlanceP1); //ยิง command เข้าไปใน DB
-                // var commandCheckBalanceP2 = `SELECT balance
-                // FROM Banking
-                // WHERE account_id = '${receiverAccountId}';`
-                // var resultCheckBalanceP2 = await Request.query(commandCheckBalanceP2); //ยิง command เข้าไปใน DB
-                // logger.debug(`BalanceP2 = ${resultCheckBalanceP2.recordset[0].balance}`);
-                // var balanceP2 = resultCheckBalanceP2.recordset[0].balance + money;
-                // logger.debug(`RecentBalanceP2 = ${balanceP2}`);
-                var commandUpdateBlanceP2 = `UPDATE Banking
+                if(money > balance) reject `Cannot transfer over your balance`
+                var recentBalanceP1 = balance - money;
+                logger.debug(`recentBalanceP1 = ${recentBalanceP1}`)
+                await new msSql().updateBalance(accountId, recentBalanceP1);//UPDATE ยอดเงินคงเหลือผู้โอน
+                var commandUpdateBlanceP2 = `UPDATE Banking 
                 SET balance += ${money}
-                WHERE account_id = '${receiverAccountId}'`// sql command
+                WHERE account_id = '${receiverAccountId}'`// sql command update ยอดเงินผู้รับโอน
                 var resultUpdate = await Request.query(commandUpdateBlanceP2); //ยิง command เข้าไปใน DB
                 let massage = {
                     statusCode: 200,
@@ -149,37 +118,77 @@ class request {
             } catch (error) { //ดัก error
                 let messageError = {
                     statusCode: error.statusCode || 400,
-                    message: error.message || `${functionName} CREATE failed [Error] ${error}`
+                    message: error.message || `${functionName} UPDATE failed [Error] ${error}`
                 }
                 logger.error(messageError.message);
                 reject(messageError);
             }
         })
     }
-    async checkBalance(req) {
+    async checkBalance(req) {//เช็คยอดเงิน
         let functionName = '[checkBalance]' //ชื่อ function
+        logger.info(`Function${functionName}`)
         return new Promise(async function (resolve, reject) {
             try {
-                var Request = new sql.Request();
                 var account_id = req.account_id || reject `${functionName} account_id is required`;
                 var pin = req.pin || reject `${functionName} pin is required`;
                 if(account_id.length != 13) reject `Please enter your account_id for 13 digits`
                 var accountId = await new request().addFormatAccountId(account_id);// จัด format ของเลขบัญชี
-                var commandCheckBalance = `SELECT balance
-                FROM Banking
-                WHERE account_id = '${accountId}' AND pin = '${pin}';`// sql command
-                var resultCheckBalance = await Request.query(commandCheckBalance); //ยิง command เข้าไปใน DB
-                logger.debug(`Balance = ${resultCheckBalance.recordset[0].balance}`)
+                var balance = await new msSql().getBalanceById(accountId, pin) //Reuse method GET ยอดเงินคงเหลือ
                 let massage = {
                     statusCode: 200,
-                    status: `Balance = ${resultCheckBalance.recordset[0].balance}`
+                    status: `Balance = ${balance}`
                 }
                 logger.info(massage.status);
                 resolve(massage);
             } catch (error) { //ดัก error
                 let messageError = {
                     statusCode: error.statusCode || 400,
-                    message: error.message || `${functionName} CREATE failed [Error] ${error}`
+                    message: error.message || `${functionName} GET failed [Error] ${error}`
+                }
+                logger.error(messageError.message);
+                reject(messageError);
+            }
+        })
+    }
+}
+class msSql {
+    async getBalanceById(account_id, pin) {// reuse method
+        let functionName = '[checkBalance]' //ชื่อ function
+        return new Promise(async function (resolve, reject) {
+            try {
+                var request = new sql.Request();
+                var commandCheckBalance = `SELECT balance
+                FROM Banking
+                WHERE account_id = '${account_id}' AND pin = '${pin}';`// sql command
+                var resultCheckBalance = await request.query(commandCheckBalance); //ยิง command เข้าไปใน DB
+                var balance = resultCheckBalance.recordset[0].balance;
+                logger.debug(`Balance = ${balance}`);
+                resolve(balance);
+            } catch (error) { //ดัก error
+                let messageError = {
+                    statusCode: error.statusCode || 400,
+                    message: error.message || `${functionName} GET failed [Error] ${error}`
+                }
+                logger.error(messageError.message);
+                reject(messageError);
+            }
+        })
+    }
+    async updateBalance(account_id, balance) {
+        let functionName = '[updateBalance]' //ชื่อ function
+        return new Promise(async function (resolve, reject) {
+            try {
+                var request = new sql.Request();
+                var commandUpdateBlance = `UPDATE Banking
+                SET balance = ${balance}
+                WHERE account_id = '${account_id}'`// sql command
+                var resultUpdate = await request.query(commandUpdateBlance); //ยิง command เข้าไปใน DB
+                resolve();
+            } catch (error) { //ดัก error
+                let messageError = {
+                    statusCode: error.statusCode || 400,
+                    message: error.message || `${functionName} UPDATE failed [Error] ${error}`
                 }
                 logger.error(messageError.message);
                 reject(messageError);
@@ -188,5 +197,3 @@ class request {
     }
 }
 module.exports = request
-
-
