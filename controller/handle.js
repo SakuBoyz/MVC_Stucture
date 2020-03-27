@@ -20,9 +20,9 @@ class request {
                 var jsonString = JSON.stringify(user);
                 fs.writeFile('/mnt/c/Users/jirap/Desktop/MVC_Stucture/model/user.json', jsonString, err =>{
                     if (err) {
-                        console.log('Error writing file', err)
+                        logger.info('Error writing file', err)
                     } else {
-                        console.log('Successfully wrote file')
+                        logger.info('Successfully wrote file')
                     }
                 })
                 var message = {
