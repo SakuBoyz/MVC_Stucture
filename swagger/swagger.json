@@ -16,7 +16,7 @@
   ],
   "paths": {
     "/login": {
-      "post": {
+      "put": {
         "tags": [
           "Account"
         ],

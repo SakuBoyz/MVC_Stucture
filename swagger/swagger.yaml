@@ -10,7 +10,7 @@ schemes:
   - http
 paths:
   /login:
-    post:
+    put:
       tags:
         - Account
       summary: เช็คชื่อเข้าร่วมงาน
