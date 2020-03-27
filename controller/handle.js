@@ -18,7 +18,7 @@ class request {
                 if(user[findIndex].checkIn == true) reject `user check in already!!!`
                 var updateStatus = user[findIndex].checkIn = true;
                 var jsonString = JSON.stringify(user);
-                fs.writeFile('/mnt/c/Users/jirap/Desktop/MVC_Stucture/model/user.json', jsonString, err =>{
+                fs.writeFile('./model/user.json', jsonString, err =>{
                     if (err) {
                         logger.error('Error writing file', err)
                     } else {

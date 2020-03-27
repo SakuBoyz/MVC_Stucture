@@ -68,7 +68,7 @@
       }
     },
     "/getTotal": {
-      "post": {
+      "get": {
         "tags": [
           "Account"
         ],

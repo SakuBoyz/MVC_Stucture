@@ -45,7 +45,7 @@ paths:
           schema:
             $ref: '#/definitions/transaction500'
   /getTotal:
-    post:
+    get:
       tags:
         - Account
       summary: เช็คยอดนักศึกษาที่เข้าร่วมงาน
