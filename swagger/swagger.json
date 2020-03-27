@@ -3,24 +3,24 @@
   "info": {
     "description": "",
     "version": "2",
-    "title": "MVC_TEST"
+    "title": "CS_CONECTION"
   },
   "host": "localhost:1150",
   "tags": [
     {
-      "name": "ATM"
+      "name": "Account"
     }
   ],
   "schemes": [
     "http"
   ],
   "paths": {
-    "/deposit": {
+    "/login": {
       "post": {
         "tags": [
-          "ATM"
+          "Account"
         ],
-        "summary": "ฝากเงิน",
+        "summary": "เช็คชื่อเข้าร่วมงาน",
         "consumes": [
           "application/x-www-form-urlencoded"
         ],
@@ -29,28 +29,20 @@
         ],
         "parameters": [
           {
-            "name": "account_id",
+            "name": "id",
             "in": "formData",
-            "description": "เลขบัญชี",
+            "description": "รหัสนักศึกษา",
             "required": true,
             "type": "string",
-            "default": "2562342110001"
+            "default": "61050150"
           },
           {
-            "name": "pin",
+            "name": "password",
             "in": "formData",
-            "description": "รหัสบัญชี",
+            "description": "รหัสผ่านประจำตัว",
             "required": true,
             "type": "string",
-            "default": "6969"
-          },
-          {
-            "name": "money",
-            "in": "formData",
-            "description": "จำนวนเงิน",
-            "required": true,
-            "type": "integer",
-            "default": 1000
+            "default": "1111"
           }
         ],
         "responses": {
@@ -75,170 +67,23 @@
         }
       }
     },
-    "/withdraw": {
+    "/getTotal": {
       "post": {
         "tags": [
-          "ATM"
+          "Account"
         ],
-        "summary": "ถอนเงิน",
+        "summary": "เช็คยอดนักศึกษาที่เข้าร่วมงาน",
         "consumes": [
           "application/x-www-form-urlencoded"
         ],
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "formData",
-            "description": "เลขบัญชี",
-            "required": true,
-            "type": "string",
-            "default": "2562342110001"
-          },
-          {
-            "name": "pin",
-            "in": "formData",
-            "description": "รหัสบัญชี",
-            "required": true,
-            "type": "string",
-            "default": "6969"
-          },
-          {
-            "name": "money",
-            "in": "formData",
-            "description": "จำนวนเงิน",
-            "required": true,
-            "type": "integer",
-            "default": 1000
-          }
-        ],
         "responses": {
           "200": {
-            "description": "Update",
+            "description": "GET",
             "schema": {
-              "$ref": "#/definitions/transaction200"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/badRequest400"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/transaction500"
-            }
-          }
-        }
-      }
-    },
-    "/transfer": {
-      "post": {
-        "tags": [
-          "ATM"
-        ],
-        "summary": "โอนเงิน",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "formData",
-            "description": "เลขบัญชี",
-            "required": true,
-            "type": "string",
-            "default": "2562342110001"
-          },
-          {
-            "name": "pin",
-            "in": "formData",
-            "description": "รหัสบัญชี",
-            "required": true,
-            "type": "string",
-            "default": "6969"
-          },
-          {
-            "name": "receive_account",
-            "in": "formData",
-            "description": "เลขบัญชีผู้รับ",
-            "required": true,
-            "type": "string",
-            "default": "2562342110002"
-          },
-          {
-            "name": "money",
-            "in": "formData",
-            "description": "จำนวนเงิน",
-            "required": true,
-            "type": "integer",
-            "default": 1000
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Update",
-            "schema": {
-              "$ref": "#/definitions/transaction200"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/badRequest400"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/transaction500"
-            }
-          }
-        }
-      }
-    },
-    "/checkBalance": {
-      "post": {
-        "tags": [
-          "ATM"
-        ],
-        "summary": "Create student info",
-        "description": "Create Student info To DataBase",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "formData",
-            "description": "เลขบัญชี",
-            "required": true,
-            "type": "string",
-            "default": "2562342110001"
-          },
-          {
-            "name": "pin",
-            "in": "formData",
-            "description": "รหัสบัญชี",
-            "required": true,
-            "type": "string",
-            "default": "6969"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Update",
-            "schema": {
-              "$ref": "#/definitions/transaction200"
+              "$ref": "#/definitions/get200"
             }
           },
           "400": {
@@ -267,7 +112,7 @@
         },
         "message": {
           "type": "string",
-          "example": "<function_name> account_id is required"
+          "example": "<function_name> file is undefined"
         }
       }
     },
@@ -280,7 +125,7 @@
         },
         "message": {
           "type": "string",
-          "example": "Transaction has been submitted"
+          "example": "Check in complete!!!"
         }
       }
     },
@@ -294,6 +139,19 @@
         "message": {
           "type": "string",
           "example": "Internal Server Error"
+        }
+      }
+    },
+    "get200": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "number",
+          "example": 200
+        },
+        "Total": {
+          "type": "number",
+          "example": 3
         }
       }
     }
