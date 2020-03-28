@@ -17,7 +17,7 @@ if (err) console.log(err);
 
 class services {
     async services (){return}
-    async ShowPatientsData(req) {
+    async ShowPatientsData() {
         let functionName = '[ShowPatientsData]' //ชื่อ function
         logger.info(`Function${functionName}`)
         return await new Promise(async function (resolve, reject) {
