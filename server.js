@@ -18,7 +18,7 @@ app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/', require('./router/index'));
 
-const port = 1150;
+const port = 8080;
 const server = app.listen(port, () => {
     logger.info(`[API] Server ready @localhost:${port}`);
     logger.info('[Swagger] http://localhost:' + port + '/api-docs/')

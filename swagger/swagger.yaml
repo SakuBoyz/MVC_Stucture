@@ -2,60 +2,25 @@ swagger: '2.0'
 info:
   description: ''
   version: '2'
-  title: CS_CONECTION
-host: 'localhost:1150'
+  title: COVID-19
+host: 'localhost:8080'
 tags:
-  - name: Account 
+  - name: Patients 
 schemes:
   - http
 paths:
-  /login:
-    put:
+  /ShowPatientsData:
+    get:
       tags:
-        - Account
-      summary: เช็คชื่อเข้าร่วมงาน
+        - Patients
+      summary: สรุปจากฐานข้อมูลของผู้ป่วย
       consumes:
         - application/x-www-form-urlencoded
       produces:
         - application/json
-      parameters:
-        - name: id
-          in: formData
-          description: รหัสนักศึกษา
-          required: true
-          type: string
-          default: '61050150'
-        - name: password
-          in: formData
-          description: รหัสผ่านประจำตัว
-          required: true
-          type: string
-          default: '1111'
       responses:
         '200':
           description: Update
-          schema:
-            $ref: '#/definitions/transaction200'
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/badRequest400'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/transaction500'
-  /getTotal:
-    get:
-      tags:
-        - Account
-      summary: เช็คยอดนักศึกษาที่เข้าร่วมงาน
-      consumes:
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: GET
           schema:
             $ref: '#/definitions/transaction200'
         '400':
@@ -75,7 +40,7 @@ definitions:
         example: 400
       message:
         type: string
-        example: <function_name> id is required
+        example: <function_name> getPatientData is not a function
   transaction200:
     type: object
     properties:
@@ -84,7 +49,7 @@ definitions:
         example: 200
       message:
         type: string
-        example: 'Check in complete!!!'
+        example: 'ข้อมูลที่ดึงออกมา'
   transaction500:
     type: object
     properties:
@@ -94,3 +59,4 @@ definitions:
       message:
         type: string
         example: 'Internal Server Error'
+      

@@ -15,7 +15,7 @@
     "http"
   ],
   "paths": {
-    "/ShowPatientsData": {
+    "/login": {
       "get": {
         "tags": [
           "Patients"
