@@ -4,7 +4,7 @@ const request = require('../controller/handle');
 const logger = require('../util/logger.js');
 
 //login
-app.post('/login', async (req, res) => {
+app.put('/login', async (req, res) => {
     try {
         logger.debug(req.body)
         var result = await new request().login(req.body)

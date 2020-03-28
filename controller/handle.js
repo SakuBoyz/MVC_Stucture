@@ -7,29 +7,35 @@ class request {
     async login(req) {//ฝากเงิน
         let functionName = '[login]' //ชื่อ function
         logger.info(`Function${functionName}`)
-        return new Promise(async function (resolve, reject) {
+        return await new Promise(async function (resolve, reject) {
             try {
                 var id = req.id || reject `${functionName} id is required`;
-                var pass = req.pass || reject `${functionName} pass is required`;
-                var getUser = await user.find(user => user.id === id, user.pass === pass);
-                if(getUser == null) reject `User does not exist`
-                if (id != getUser.id || pass != getUser.pass) reject `id or password are not correct`
-                var findIndex = user.findIndex(user => user.id === id, user.pass === pass);
-                if(user[findIndex].checkIn == true) reject `user check in already!!!`
+                var password = req.password || reject `${functionName} password is required`;
+                var getUser = await user.find(user => user.id === id, user.password === password);
+                if(getUser == null) {
+                    reject `User does not exist`
+                    return
+                }
+                if (id != getUser.id || password != getUser.password) {
+                    reject `id or password are not correct`
+                    return
+                }
+                var findIndex = await user.findIndex(user => user.id === id, user.password === password);
+                if(user[findIndex].checkIn) {
+                    reject  `user already check in !!!`
+                    return
+                }
                 var updateStatus = user[findIndex].checkIn = true;
                 var jsonString = JSON.stringify(user);
                 fs.writeFile('./model/user.json', jsonString, err =>{
-                    if (err) {
-                        logger.error('Error writing file', err)
-                    } else {
-                        logger.info('Successfully wrote file')
-                    }
+                    if (err) logger.error('Error writing file', err)
+                    else logger.info('Successfully wrote file')
                 })
                 var message = {
                     statusCode: 200,
                     message: `Check in complete!!!`,     
                 }
-                logger.info(message.status);
+                logger.info(message.message);
                 resolve(message);
             } catch (error) { //ดัก error
                 let messageError = {
@@ -48,13 +54,13 @@ class request {
             try {
                 var count = 0;
                 for (let i = 0; i < user.length; i++) {
-                    if(user[i].checkIn == true)  count++;
+                    if(user[i].checkIn)  count++;
                 }
                 var message = {
                     statusCode: 200,
                     Total: `${count}`
                 }
-                logger.info(message.Total);
+                logger.info(`Total = ${message.Total}`);
                 resolve(message);
             } catch (error) { //ดัก error
                 let messageError = {
