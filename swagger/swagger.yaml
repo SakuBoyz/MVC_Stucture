@@ -1,205 +1,53 @@
 swagger: '2.0'
 info:
-  description: ''
+  description: 'ระบบนี้้แม่งห่วย'
   version: '2'
-  title: MVC_TEST
-host: 'localhost:1150'
+  title: เช็คชื่อเข้างาน Cs Connection
+host: '127.0.0.1:8080'
 tags:
-  - name: ATM
+  - name: ระบบเช็คชื่อ
+  - name: ระบบเช็คจำนวนคน
 schemes:
   - http
 paths:
-  /deposit:
+  /Login:
     post:
       tags:
-        - ATM
-      summary: ฝากเงิน
+        - ระบบเช็คชื่อ
+      summary: ลงทะเบียนเข้าร่วมงาน
       consumes:
         - application/x-www-form-urlencoded
       produces:
         - application/json
       parameters:
-        - name: account_id
+        - name: id
           in: formData
-          description: เลขบัญชี
+          description: รหัสนักศึกษา
           required: true
           type: string
-          default: '2562342110001'
-        - name: pin
+          default: '61050190'
+        - name: password
           in: formData
-          description: รหัสบัญชี
+          description: รหัสประจำตัวนักศึกษา
           required: true
           type: string
-          default: '6969'
-        - name: money
-          in: formData
-          description: จำนวนเงิน
-          required: true
-          type: integer
-          default: 1000
+          default: '1234'
       responses:
         '200':
           description: Update
           schema:
-            $ref: '#/definitions/transaction200'
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/badRequest400'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/transaction500'
-  /withdraw:
-    post:
+            example: "เข้าสู่ระบบสำเร็จ"
+  /Count:
+    get:
       tags:
-        - ATM
-      summary: ถอนเงิน
+        - ระบบเช็คจำนวนคน
+      summary: ลงทะเบียนเข้าร่วมงาน
       consumes:
         - application/x-www-form-urlencoded
       produces:
         - application/json
-      parameters:
-        - name: account_id
-          in: formData
-          description: เลขบัญชี
-          required: true
-          type: string
-          default: '2562342110001'
-        - name: pin
-          in: formData
-          description: รหัสบัญชี
-          required: true
-          type: string
-          default: '6969'
-        - name: money
-          in: formData
-          description: จำนวนเงิน
-          required: true
-          type: integer
-          default: 1000
       responses:
         '200':
           description: Update
           schema:
-            $ref: '#/definitions/transaction200'
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/badRequest400'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/transaction500'
-  /transfer:
-    post:
-      tags:
-        - ATM
-      summary: โอนเงิน
-      consumes:
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-      parameters:
-        - name: account_id
-          in: formData
-          description: เลขบัญชี
-          required: true
-          type: string
-          default: '2562342110001'
-        - name: pin
-          in: formData
-          description: รหัสบัญชี
-          required: true
-          type: string
-          default: '6969'
-        - name: receive_account
-          in: formData
-          description: เลขบัญชีผู้รับ
-          required: true
-          type: string
-          default: '2562342110002'
-        - name: money
-          in: formData
-          description: จำนวนเงิน
-          required: true
-          type: integer
-          default: 1000
-      responses:
-        '200':
-          description: Update
-          schema:
-            $ref: '#/definitions/transaction200'
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/badRequest400'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/transaction500'
-  /checkBalance:
-    post:
-      tags:
-        - ATM
-      summary: Create student info
-      description: Create Student info To DataBase
-      consumes:
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-      parameters:
-        - name: account_id
-          in: formData
-          description: เลขบัญชี
-          required: true
-          type: string
-          default: '2562342110001'
-        - name: pin
-          in: formData
-          description: รหัสบัญชี
-          required: true
-          type: string
-          default: '6969'
-      responses:
-        '200':
-          description: Update
-          schema:
-            $ref: '#/definitions/transaction200'
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/badRequest400'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/transaction500'
-definitions:
-  badRequest400:
-    type: object
-    properties:
-      statusCode:
-        type: number
-        example: 400
-      message:
-        type: string
-        example: <function_name> account_id is required
-  transaction200:
-    type: object
-    properties:
-      statusCode:
-        type: number
-        example: 200
-      message:
-        type: string
-        example: 'Transaction has been submitted'
-  transaction500:
-    type: object
-    properties:
-      statusCode:
-        type: number
-        example: 500
-      message:
-        type: string
-        example: 'Internal Server Error'
-      
+            example: "จำนวนคนที่เข้าร่วมงานทั้งหมด 7 คน"
