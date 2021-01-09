@@ -1,4 +1,8 @@
 # MVC_Stucture
+- Model => json
+- View => Swagger
+- Controller => Node.JS
+
 ### How to install
     1) open terminal
     2) git clone https://github.com/Ohmsmmm/MVC_Stucture.git
