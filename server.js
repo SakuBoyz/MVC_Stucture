@@ -1,25 +1,24 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
 const bodyParser = require('body-parser');
-const logger = require('./util/logger.js');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger/swagger.json');
+const swaggerDocument = require('./views/swagger.json');
 
-app.get('/', (req, res) => {
-    res.send('Hi! FROM Ohmsm');
-})
+//call swagger(ui)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// parse application/json
+//json parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+  }));
 
-//swagger
-app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//call router
+app.use('/', require("./controllers/router"));   
 
-app.use('/', require('./router/index'));
-
-const port = 1150;
-const server = app.listen(port, () => {
-    logger.info(`[API] Server ready @localhost:${port}`);
-    logger.info('[Swagger] http://localhost:' + port + '/api-docs/')
+//Start Server at port....
+const port = 3000
+app.listen(port, () => {
+  console.info('[Swagger] http://localhost:' + port + '/api-docs/')
+  console.info('Start server at port ' + port)
 })
